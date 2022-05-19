@@ -1,0 +1,55 @@
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: 'python app.py'
+    restart: on-failure
+
+    ports:
+      - 9000:5000
+    volumes:
+      - .:/app
+
+    networks:
+      - default
+      - network1
+    external_links:
+      - rabbitmq
+    depends_on:
+      - db          
+
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: 'python consumer.py'
+    restart: on-failure
+    networks:
+      - default
+      - network1
+    external_links:
+      - rabbitmq
+
+    depends_on:
+      - backend
+      - db
+  
+  db:
+    image: postgres:14.1
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 'test'
+      POSTGRES_USER: 'test'
+      POSTGRES_DB: dj
+
+    volumes:
+      - .dbdata:/var/lib/postgres/data\
+    ports:
+      - 33068:5432
+
+
+networks:
+  network1:
+    external: true

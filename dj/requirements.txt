@@ -1,0 +1,11 @@
+Flask==2.0.1
+Flask-SQLAlchemy==2.5.1
+SQLAlchemy==1.3.20
+Flask-Migrate==2.5.3
+Flask-Cors==3.0.9
+requests
+psycopg2-binary==2.8.6 # psycopg2-binary==2.8.6 use bin for non-alpine ; bin is not available in alpine?
+pika==1.2.0
+python-dotenv==0.19.2 # python-dotenv for non-alpine
+pafy
+youtube-dl

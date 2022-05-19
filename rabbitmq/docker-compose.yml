@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+    rabbitmq3:
+        container_name: "rabbitmq"
+        image: rabbitmq:3.8-management-alpine
+        environment:
+            - RABBITMQ_DEFAULT_USER=myuser
+            - RABBITMQ_DEFAULT_PASS=mypassword
+
+        expose:
+            - 5672 #amqp
+            - 15672 #http
+
+        networks:
+        - network1
+
+        healthcheck:
+            test: [ "CMD", "rabbitmqctl", "status"]
+            interval: 5s
+            timeout: 20s
+            retries: 5
+        volumes:
+        - ./etc/rabbitmq/conf:/etc/rabbitmq/
+        - ./etc/rabbitmq/data/:/var/lib/rabbitmq/
+        - ./etc/rabbitmq/logs/:/var/log/rabbitmq/
+
+
+
+
+
+# RUN docker run --rm -it -p 15672:15672 -p 5672:5672 rabbitmq:3-management
+
+# Create network for other containers
+networks:
+  network1:
+    external: false
+    name: network1
