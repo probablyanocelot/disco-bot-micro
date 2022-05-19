@@ -1,0 +1,9 @@
+/.env
+/disco-bot-mono.code-workspace
+/ffmpeg.exe
+/old
+/other
+/pips
+__pycache__/getreddit.cpython-39.pyc
+__pycache__/tidal.cpython-39.pyc
+tidal-trash.py
