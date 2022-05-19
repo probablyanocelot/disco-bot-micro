@@ -3,12 +3,11 @@ import sys
 import discord
 import pafy
 import asyncio
-import getreddit
 import json
+import requests
 from asgiref.sync import async_to_sync
 from discord.ext import commands
 from config import FFMPEG_OPTIONS, TOKEN
-from ctnrs import counter
 from search_yt import yt_query, YT_API_KEY, get_vid_name
 
 
@@ -40,6 +39,11 @@ async def restart(ctx):
 def restart_bot():
     '''Restarts the bot.'''
     os.execv(sys.executable, ['python'] + sys.argv)
+
+
+# def is_connected(ctx):
+#     voice_client = get(ctx.bot.voice_clients, guild=ctx.guild)
+#     return voice_client and voice_client.is_connected()
 
 
 async def author_in_voice(ctx):
@@ -76,6 +80,9 @@ async def get_guild_dict(ctx):
 
 async def player(ctx, stream_url, stream_title):
     voice_client = ctx.message.guild.voice_client
+    # if not is_connected(ctx):
+    #     voice_client = ctx.message.guild.voice_client
+    #     voice_client.connect()
     try:
         if voice_client.is_playing():
             voice_client.pause()
@@ -170,13 +177,13 @@ async def rlist(ctx, subreddit):
         await ctx.send("{} is not connected to a voice channel".format(ctx.message.author.name))
         return
     guild_dict = await get_guild_dict(ctx)
-    data = getreddit.post_data(subreddit, '100')
-    filtered_data = json.loads(getreddit.filter_data(data, criteria='youtu'))
-    # if len(song_dict) > 0:
-    for song in filtered_data:
-        # print(song)
+    url = "http://localhost:9000/api/r/{}/playlist".format(subreddit)
+
+    data = requests.get(url).json()
+
+    for song in data:
         guild_dict[len(guild_dict)] = {
-            'title': filtered_data[song]['title'], 'url': filtered_data[song]['url']}
+            'title': data[song]['title'], 'url': data[song]['url']}
     print(song_dict)
     print(guild_dict)
     await play(ctx, by_user=False)
