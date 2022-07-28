@@ -6,6 +6,6 @@ or
 Query youtube for a specific song using keywords.
 
 
-/bot/       - discord
-/dj/        - music
+/bot/       - discord <br>
+/dj/        - music <br>
 /rabbitmq/  - discord:music message broker
