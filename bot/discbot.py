@@ -14,7 +14,7 @@ from search_yt import yt_query, YT_API_KEY, get_vid_name
 # BOT
 intents = discord.Intents.all()  # bot-side limiters
 client = discord.Client(intents=intents)
-bot = commands.Bot(command_prefix='$')
+bot = commands.Bot(command_prefix='$', intents=intents)
 
 
 song_dict = dict()

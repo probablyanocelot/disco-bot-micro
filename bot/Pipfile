@@ -10,9 +10,10 @@ pafy = "*"
 python-dotenv = "*"
 asgiref = "*"
 opuslib = "==3.0.1"
-tidalapi = {ref = "0.7.x", git = "https://github.com/tamland/python-tidal"}
 youtube_dl = "*"
 PyNaCl = "*"
+tidalapi = {ref = "0.7.x", git = "https://github.com/tamland/python-tidal"}
+discord = "*"
 
 [dev-packages]
 

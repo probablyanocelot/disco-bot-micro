@@ -6,9 +6,9 @@ pushshift_api_url = 'https://api.pushshift.io/reddit/search/'
 # returns JSON
 
 
-def get_data(sub_or_comment, subreddit, size):
+def get_data(submission_or_comment, subreddit, size):
     res = requests.get(pushshift_api_url +
-                       f'{sub_or_comment}/?subreddit={subreddit}&size={size}')
+                       f'{submission_or_comment}/?subreddit={subreddit}&size={size}')
     return res.json()['data']
 
 
@@ -39,3 +39,16 @@ def get_yt_subs(subreddit):
     posts = post_data(subreddit, 50)
     yt_posts = filter_data(posts, 'youtu')
     return yt_posts
+
+
+if __name__ == 'main':
+    category = 'submission'
+    subreddit = 'hiphopheads'
+    size = 20
+    res = requests.get(pushshift_api_url +
+                       f'{category}/?subreddit={subreddit}&size={size}')
+    print(res)
+    resJson = res.json()['data']
+    print(resJson)
+    # data = get_data('submission', 'hiphopheads','10')
+    # print(data)

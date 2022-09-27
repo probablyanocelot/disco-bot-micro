@@ -61,6 +61,7 @@ if __name__ == '__main__':
     json_data = {'0': {'title': 'asdfjldshkf',
                        'url': 'https://youtu.be/Hldov3JOopU'}}
     get_vid_name(YT_API_KEY, json_data)
+    # print(yt_query(YT_API_KEY, 'chloraseptic'))
 
 
 # def try_title(id):
