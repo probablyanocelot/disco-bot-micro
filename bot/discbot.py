@@ -1,7 +1,8 @@
 import os
 import sys
 import discord
-import pafy
+# import pafy
+import yt_dlp
 import asyncio
 import json
 import requests
@@ -9,6 +10,8 @@ from asgiref.sync import async_to_sync
 from discord.ext import commands
 from config import FFMPEG_OPTIONS, TOKEN
 from search_yt import yt_query, YT_API_KEY, get_vid_name
+
+ydl_opts = {'format': 'bestaudio'}
 
 
 # BOT
@@ -131,7 +134,7 @@ async def pause(ctx, by_user=True):
         return
     voice_client = ctx.message.guild.voice_client
     if voice_client.is_playing():
-        await voice_client.pause()
+        voice_client.pause() #await 
     else:
         if by_user:
             await ctx.send("The bot is not playing anything at the moment.")
@@ -145,7 +148,7 @@ async def resume(ctx):
         return
     voice_client = ctx.message.guild.voice_client
     if voice_client.is_paused():
-        await voice_client.resume()
+        voice_client.resume() #await 
     else:
         await ctx.send("The bot was not playing anything before this. Use play_song command")
 
@@ -216,13 +219,16 @@ async def play(ctx, *terms, by_user=True):
             url = guild_dict[counter['count']]['url']
 
         try:
-            song = pafy.new(url).getbestaudio()
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                song = ydl.extract_info(url, download=False)
+                # print(song_info)
+            # song = pafy.new(url).getbestaudio()
         except:
             if by_user:
                 await ctx.send("Cannot get streaming data for {}".format(*terms))
             return
 
-        guild_dict[len(guild_dict)] = {'title': song.title, 'url': url}
+        # guild_dict[len(guild_dict)] = {'title': song.title, 'url': url}
 
         try:
             if voice_client.is_playing():
@@ -231,16 +237,16 @@ async def play(ctx, *terms, by_user=True):
         except AttributeError:
             return
 
-        try:
-            guild_dict[len(guild_dict)] = {
-                'title': song.title, 'url': url}
-        except AttributeError:
-            await ctx.send('No song found.')
-            return
+        # try:
+        #     guild_dict[len(guild_dict)] = {
+        #         'title': song.title, 'url': url}
+        # except AttributeError:
+        #     await ctx.send('No song found.')
+        #     return
 
-        song = guild_dict[counter['count']]
-        print(song_dict)
-        print(guild_dict)
+        # song = guild_dict[counter['count']]
+        # print(song_dict)
+        # print(guild_dict)
         await player(ctx, song['url'], song['title'])
 
 

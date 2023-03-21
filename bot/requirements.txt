@@ -1,10 +1,11 @@
 requests
 # psycopg2
 discord.py
-pafy
+# pafy
 # icecream
 python-dotenv
-youtube-dl
+yt-dlp
+# youtube-dl
 asgiref
 pynacl
 opuslib==3.0.1
